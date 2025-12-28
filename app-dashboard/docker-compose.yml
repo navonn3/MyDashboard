@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  # Backend API Server
+  api:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+    volumes:
+      - ./data:/app/data  # Persist SQLite database
+    restart: unless-stopped
+
+  # Frontend (served by Nginx)
+  web:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=/api
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  # Combined (single container with both)
+  # Uncomment below if you want a single container instead
+  # combined:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.combined
+  #   ports:
+  #     - "3000:3000"
+  #   volumes:
+  #     - ./data:/app/data
+  #   restart: unless-stopped
