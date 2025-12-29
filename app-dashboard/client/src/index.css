@@ -19,6 +19,12 @@
     text-align: right;
   }
 
+  /* Auto-detect text direction for mixed content */
+  .auto-dir {
+    direction: auto;
+    unicode-bidi: plaintext;
+  }
+
   /* Scrollbar styling for dark mode */
   ::-webkit-scrollbar {
     @apply w-2 h-2;
@@ -91,11 +97,15 @@
   /* Select styles */
   .select {
     @apply input appearance-none cursor-pointer;
-    @apply bg-no-repeat bg-right;
-    padding-right: 2.5rem;
+    @apply bg-no-repeat;
+    padding-inline-end: 2.5rem;
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-    background-position: right 0.5rem center;
+    background-position: left 0.5rem center;
     background-size: 1.5em 1.5em;
+  }
+
+  [dir="ltr"] .select {
+    background-position: right 0.5rem center;
   }
 
   /* Label styles */
@@ -143,7 +153,15 @@
 
   /* Table styles */
   .table {
-    @apply w-full text-sm text-left;
+    @apply w-full text-sm;
+  }
+
+  [dir="rtl"] .table {
+    text-align: right;
+  }
+
+  [dir="ltr"] .table {
+    text-align: left;
   }
 
   .table th {
