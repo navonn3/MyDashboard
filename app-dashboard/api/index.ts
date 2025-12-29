@@ -26,9 +26,9 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(200).end();
   }
 
-  const { path } = req.query;
-  const pathArray = Array.isArray(path) ? path : [path];
-  const route = '/' + pathArray.join('/');
+  // Parse route from URL path (remove /api prefix)
+  const url = new URL(req.url || '/', `http://${req.headers.host}`);
+  const route = url.pathname.replace(/^\/api/, '') || '/';
 
   try {
     // Health check
