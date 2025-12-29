@@ -1,9 +1,0 @@
-# Railway Configuration
-# This tells Railway how to build and run the app
-
-[build]
-builder = "nixpacks"
-buildCommand = "cd app-dashboard/server && npm install && npm run build"
-
-[deploy]
-startCommand = "cd app-dashboard/server && npm run db:seed && npm start"
