@@ -111,14 +111,18 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     if (statusMatch && req.method === 'GET') {
       const appId = statusMatch[1];
       const app = db.applications.find(a => a.id === appId);
-      // Return success even if app not found - just with unknown status
+      const now = new Date().toISOString();
+      // Return status in format client expects
       return res.json({
         success: true,
         data: {
-          app_id: appId,
-          live_url_status: app?.live_url ? 'unknown' : null,
-          github_status: app?.github_url ? 'unknown' : null,
-          last_checked: new Date().toISOString()
+          live: {
+            status: app?.live_url ? 'unknown' : 'offline',
+            lastChecked: now
+          },
+          github: app?.github_url ? { status: 'unknown', lastChecked: now } : undefined,
+          database: app?.database_url ? { status: 'unknown', lastChecked: now } : undefined,
+          frontend: app?.frontend_url ? { status: 'unknown', lastChecked: now } : undefined
         }
       });
     }
@@ -328,9 +332,12 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
 
     // Fallback for /status without app ID
     if (route === '/status' || route.endsWith('/status')) {
+      const now = new Date().toISOString();
       return res.json({
         success: true,
-        data: { status: 'unknown', last_checked: new Date().toISOString() }
+        data: {
+          live: { status: 'unknown', lastChecked: now }
+        }
       });
     }
 
