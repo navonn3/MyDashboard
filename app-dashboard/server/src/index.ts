@@ -23,7 +23,10 @@ const PORT = process.env.PORT || 3001;
 initializeDatabase();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: true, // Allow all origins (configure specific domains in production)
+  credentials: true
+}));
 app.use(express.json({ limit: '10mb' }));
 
 // Rate limiting for API endpoints
