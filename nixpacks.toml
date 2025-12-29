@@ -1,0 +1,9 @@
+# Nixpacks configuration for Railway
+[phases.setup]
+nixPkgs = ["nodejs_18", "npm"]
+
+[phases.build]
+cmds = ["cd app-dashboard/server && npm install && npm run build"]
+
+[start]
+cmd = "cd app-dashboard/server && npm run db:seed && npm start"
