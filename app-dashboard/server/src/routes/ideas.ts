@@ -152,11 +152,11 @@ router.put('/:id', (req: Request, res: Response) => {
     }
 
     // Handle status change to completed
-    let completedAt = existing.completed_at;
+    let completedAt: string | undefined = existing.completed_at;
     if (body.status === 'completed' && existing.status !== 'completed') {
       completedAt = new Date().toISOString();
     } else if (body.status && body.status !== 'completed') {
-      completedAt = null;
+      completedAt = undefined;
     }
 
     db.prepare(`

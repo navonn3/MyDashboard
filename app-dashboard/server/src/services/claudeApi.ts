@@ -126,7 +126,7 @@ export async function generateImplementationPrompt(
     throw new Error(`API error (${response.status}): ${errorMessage}`);
   }
 
-  const data: ClaudeResponse = await response.json();
+  const data = await response.json() as ClaudeResponse;
 
   if (!data.content || data.content.length === 0) {
     throw new Error('No response content from Claude API');
