@@ -94,7 +94,7 @@ export async function createApplication(data: CreateApplicationData): Promise<Ap
 
 export async function updateApplication(
   id: string,
-  data: Partial<CreateApplicationData> & { status?: string }
+  data: Partial<CreateApplicationData> & { status?: string; hidden?: boolean }
 ): Promise<ApiResponse<Application>> {
   return fetchApi<Application>(`/applications/${id}`, {
     method: 'PUT',

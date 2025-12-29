@@ -19,14 +19,17 @@ export interface Application {
   name: string;
   description?: string;
   github_url?: string;
+  codespace_url?: string;
   database_url?: string;
   database_platform?: DatabasePlatform;
   frontend_url?: string;
   frontend_platform?: FrontendPlatform;
   live_url?: string;
+  vercel_project_url?: string;
   build_platform: BuildPlatform;
   platform_config?: string;
   status: AppStatus;
+  hidden?: boolean;
   created_at: string;
   updated_at: string;
 }

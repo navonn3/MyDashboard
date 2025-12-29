@@ -4,7 +4,7 @@
  */
 
 import { useState, useEffect, useMemo } from 'react';
-import { Search, Filter, RefreshCw } from 'lucide-react';
+import { Search, Filter, RefreshCw, Eye, EyeOff } from 'lucide-react';
 import { useUIStore, useDataStore } from '../hooks/useStore';
 import { getApplications } from '../services/api';
 import ApplicationTable from './ApplicationTable';
@@ -17,6 +17,10 @@ export default function Dashboard() {
   const { applications, setApplications } = useDataStore();
   const [isLoading, setIsLoading] = useState(false);
   const [searchInput, setSearchInput] = useState(filterOptions.search || '');
+  const [showHidden, setShowHidden] = useState(false);
+
+  // Count hidden apps
+  const hiddenCount = applications.filter(app => app.hidden).length;
 
   // Debounced search
   const debouncedSearch = useMemo(
@@ -143,6 +147,17 @@ export default function Dashboard() {
             <option value="build_platform-asc">{isRTL ? 'פלטפורמה' : 'Platform'}</option>
           </select>
 
+          {/* Show/Hide Hidden Toggle */}
+          {hiddenCount > 0 && (
+            <button
+              onClick={() => setShowHidden(!showHidden)}
+              className={`btn-icon ${showHidden ? 'text-primary-600' : ''}`}
+              title={isRTL ? (showHidden ? 'הסתר מוסתרים' : `הצג מוסתרים (${hiddenCount})`) : (showHidden ? 'Hide hidden' : `Show hidden (${hiddenCount})`)}
+            >
+              {showHidden ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+            </button>
+          )}
+
           {/* Refresh Button */}
           <button
             onClick={handleRefresh}
@@ -177,7 +192,7 @@ export default function Dashboard() {
             )}
           </div>
         ) : (
-          <ApplicationTable applications={applications} isLoading={isLoading} />
+          <ApplicationTable applications={applications} isLoading={isLoading} showHidden={showHidden} />
         )}
       </div>
     </section>

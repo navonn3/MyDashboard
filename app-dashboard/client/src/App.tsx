@@ -13,6 +13,7 @@ import { getApplications, getGlobalIdeas } from './services/api';
 import Header from './components/Header';
 import Dashboard from './components/Dashboard';
 import GlobalIdeasBox from './components/GlobalIdeasBox';
+import DeploymentStatusPanel from './components/DeploymentStatusPanel';
 import AddAppWizard from './components/AddAppWizard';
 import SettingsModal from './components/SettingsModal';
 import AppDetailsModal from './components/AppDetailsModal';
@@ -114,9 +115,12 @@ function App() {
       <Header />
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-6 space-y-8">
+      <main className="mx-auto py-6 space-y-6" style={{ width: '90%', maxWidth: '1600px' }}>
         {/* Applications Dashboard */}
         <Dashboard />
+
+        {/* Deployment Status */}
+        <DeploymentStatusPanel />
 
         {/* Global Ideas Section */}
         <GlobalIdeasBox />

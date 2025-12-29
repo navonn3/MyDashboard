@@ -36,7 +36,7 @@ type TabType = 'overview' | 'notes' | 'ideas' | 'history';
 
 export default function AppDetailsModal() {
   const { closeAppDetails, selectedAppId, isRTL } = useUIStore();
-  const { updateApplicationInStore, setAppIdeas, setPromptHistory, appIdeas, promptHistory } = useDataStore();
+  const { updateApplicationInStore, setAppIdeas, setPromptHistory, promptHistory } = useDataStore();
 
   const [app, setApp] = useState<Application | null>(null);
   const [status, setStatus] = useState<ApplicationStatusCheck | null>(null);
@@ -135,7 +135,6 @@ export default function AppDetailsModal() {
     }
   };
 
-  const ideas = selectedAppId ? appIdeas[selectedAppId] || [] : [];
   const history = selectedAppId ? promptHistory[selectedAppId] || [] : [];
 
   if (isLoading) {
@@ -166,8 +165,8 @@ export default function AppDetailsModal() {
   const tabs: { id: TabType; label: string; labelHe: string }[] = [
     { id: 'overview', label: 'Overview', labelHe: 'סקירה' },
     { id: 'notes', label: 'Notes', labelHe: 'הערות' },
-    { id: 'ideas', label: `Ideas (${ideas.length})`, labelHe: `רעיונות (${ideas.length})` },
-    { id: 'history', label: 'Prompt History', labelHe: 'היסטוריית פרומפטים' },
+    { id: 'ideas', label: 'Ideas & Prompts', labelHe: 'רעיונות ופרומפטים' },
+    { id: 'history', label: 'History', labelHe: 'היסטוריה' },
   ];
 
   return (
@@ -428,7 +427,7 @@ export default function AppDetailsModal() {
           )}
 
           {activeTab === 'ideas' && (
-            <IdeasList appId={app.id} ideas={ideas} />
+            <IdeasList appId={app.id} appName={app.name} />
           )}
 
           {activeTab === 'history' && (

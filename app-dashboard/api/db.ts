@@ -11,14 +11,17 @@ export interface Application {
   name: string;
   description?: string;
   github_url?: string;
+  codespace_url?: string;
   database_url?: string;
   database_platform?: string;
   frontend_url?: string;
   frontend_platform?: string;
   live_url?: string;
+  vercel_project_url?: string;
   build_platform: string;
   platform_config?: string;
   status: string;
+  hidden?: boolean;
   created_at: string;
   updated_at: string;
 }
@@ -122,6 +125,7 @@ class Database {
         database_platform: 'supabase',
         frontend_url: 'https://vercel.com/matans-projects-827d0407/blue-basket',
         frontend_platform: 'vercel',
+        vercel_project_url: 'https://vercel.com/matans-projects-827d0407/blue-basket',
         live_url: 'https://blue-basket-supabase.vercel.app/',
         build_platform: 'vercel',
         status: 'active',
@@ -135,6 +139,7 @@ class Database {
         github_url: 'https://github.com/navonn3/recap-writer',
         frontend_url: 'https://vercel.com/matans-projects-827d0407/recap-writer',
         frontend_platform: 'vercel',
+        vercel_project_url: 'https://vercel.com/matans-projects-827d0407/recap-writer',
         live_url: 'https://recap-writer.vercel.app/',
         build_platform: 'vercel',
         status: 'active',
@@ -150,6 +155,7 @@ class Database {
         database_platform: 'supabase',
         frontend_url: 'https://vercel.com/matans-projects-827d0407/auto-pod',
         frontend_platform: 'vercel',
+        vercel_project_url: 'https://vercel.com/matans-projects-827d0407/auto-pod',
         live_url: 'https://auto-pod-xi.vercel.app/',
         build_platform: 'railway',
         platform_config: JSON.stringify({
