@@ -12,5 +12,4 @@ healthcheckTimeout = 100
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 3
 
-[service]
-internalPort = 3001
+# Service port is auto-detected from $PORT env variable
