@@ -6,7 +6,7 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
   db.init();
 
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, PUT, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, PUT, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') {
@@ -51,6 +51,15 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
         success: true,
         data: { ...setting, value: setting.encrypted ? '********' : setting.value }
       });
+    }
+
+    if (req.method === 'DELETE') {
+      const settingIndex = db.settings.findIndex(s => s.key === key);
+      if (settingIndex === -1) {
+        return res.status(404).json({ success: false, error: 'Setting not found' });
+      }
+      const deleted = db.settings.splice(settingIndex, 1)[0];
+      return res.json({ success: true, data: { deleted: deleted.key } });
     }
 
     return res.status(405).json({ success: false, error: 'Method not allowed' });

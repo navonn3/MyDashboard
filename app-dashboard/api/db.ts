@@ -60,6 +60,15 @@ export interface Setting {
   updated_at: string;
 }
 
+export interface GeneratedPrompt {
+  id: string;
+  app_id: string;
+  prompt: string;
+  ideas_count: number;
+  idea_ids: string[];
+  created_at: string;
+}
+
 // In-memory data store
 class Database {
   applications: Application[] = [];
@@ -67,6 +76,7 @@ class Database {
   ideas: AppIdea[] = [];
   globalIdeas: GlobalIdea[] = [];
   settings: Setting[] = [];
+  generatedPrompts: GeneratedPrompt[] = [];
   initialized = false;
 
   init() {
