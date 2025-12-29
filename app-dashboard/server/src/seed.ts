@@ -20,75 +20,155 @@ function seedDatabase(): void {
 
   console.log('Seeding database with sample data...');
 
-  // Create sample application
-  const appId = uuidv4();
   const insertApp = db.prepare(`
     INSERT INTO applications (id, name, description, github_url, database_url, database_platform,
       frontend_url, frontend_platform, live_url, build_platform, platform_config, status)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
 
-  insertApp.run(
-    appId,
-    'Basketball Broadcast Manager',
-    'Web application for syncing Google Sheets schedule data with Israel Basketball API',
-    'https://github.com/example/basketball-broadcast-manager',
-    'https://supabase.com/dashboard/project/xxxxx',
-    'supabase',
-    'https://vercel.com/project/basketball-broadcast',
-    'vercel',
-    'https://basketball-broadcast.vercel.app',
-    'vibe_coding',
-    JSON.stringify({ vercelProjectId: 'prj_xxxxx' }),
-    'active'
-  );
-
-  // Create sample notes for the application
-  const noteId = uuidv4();
   const insertNote = db.prepare(`
     INSERT INTO app_notes (id, app_id, content)
     VALUES (?, ?, ?)
   `);
 
-  insertNote.run(
-    noteId,
-    appId,
-    '<h2>Project Overview</h2><p>This application manages basketball broadcast schedules and syncs data between Google Sheets and the Israel Basketball API.</p><h3>Key Features</h3><ul><li>Real-time schedule sync</li><li>Automatic broadcast notifications</li><li>Team statistics dashboard</li></ul>'
-  );
-
-  // Create sample ideas for the application
   const insertIdea = db.prepare(`
     INSERT INTO app_ideas (id, app_id, title, description, priority, status)
     VALUES (?, ?, ?, ?, ?, ?)
   `);
 
-  const ideas = [
-    {
-      id: uuidv4(),
-      title: 'Add team logo caching',
-      description: 'Cache team logos locally to reduce API calls and improve loading performance',
-      priority: 'medium',
-      status: 'pending'
-    },
-    {
-      id: uuidv4(),
-      title: 'Implement real-time score updates',
-      description: 'WebSocket connection for live score updates during games. Consider using Supabase Realtime or Socket.io',
-      priority: 'high',
-      status: 'pending'
-    },
-    {
-      id: uuidv4(),
-      title: 'Dark mode support',
-      description: 'Add dark mode theme option for better viewing during evening broadcasts',
-      priority: 'low',
-      status: 'completed'
-    }
-  ];
+  // ============== Application 1: Sports Portfolio ==============
+  const portfolioId = uuidv4();
+  insertApp.run(
+    portfolioId,
+    'תיק עבודות - שדרן ספורט',
+    'Sports Broadcaster Portfolio - Personal portfolio website showcasing sports broadcasting work',
+    null,
+    null,
+    null,
+    'https://app.netlify.com/projects/navon-portfolio/overview',
+    'netlify',
+    'https://navon-portfolio.netlify.app/',
+    'netlify',
+    null,
+    'active'
+  );
 
-  for (const idea of ideas) {
-    insertIdea.run(idea.id, appId, idea.title, idea.description, idea.priority, idea.status);
-  }
+  // ============== Application 2: Blue-Basket ==============
+  const blueBasketId = uuidv4();
+  insertApp.run(
+    blueBasketId,
+    'Blue-Basket',
+    'Basketball game data management system with PDF generation for game day reports',
+    'https://github.com/navonn3/BlueBasket_Supabase',
+    'https://supabase.com/dashboard/project/tykzjhywnrhtkqppgdyn',
+    'supabase',
+    'https://vercel.com/matans-projects-827d0407/blue-basket',
+    'vercel',
+    'https://blue-basket-supabase.vercel.app/',
+    'vercel',
+    JSON.stringify({
+      scraperRepo: 'https://github.com/navonn3/mega-scraper',
+      pdfExample: 'https://blue-basket-supabase.vercel.app/gamedaypdf?id=1_741621&type=basic'
+    }),
+    'active'
+  );
+
+  insertIdea.run(uuidv4(), blueBasketId, 'Add more PDF templates', 'Create additional PDF layouts for different game types', 'medium', 'pending');
+  insertIdea.run(uuidv4(), blueBasketId, 'Improve scraper performance', 'Optimize mega-scraper for faster data collection', 'high', 'pending');
+
+  // ============== Application 3: Recap-Writer ==============
+  const recapWriterId = uuidv4();
+  insertApp.run(
+    recapWriterId,
+    'Recap-Writer',
+    'AI Basketball Narrator - Generates game recaps and narratives using AI',
+    'https://github.com/navonn3/recap-writer',
+    null,
+    null,
+    'https://vercel.com/matans-projects-827d0407/recap-writer',
+    'vercel',
+    'https://recap-writer.vercel.app/',
+    'vercel',
+    null,
+    'active'
+  );
+
+  insertIdea.run(uuidv4(), recapWriterId, 'Multi-language support', 'Add Hebrew language output for game recaps', 'high', 'pending');
+  insertIdea.run(uuidv4(), recapWriterId, 'Euroleague integration', 'Parse play-by-play data from Euroleague website', 'medium', 'pending');
+
+  // ============== Application 4: Auto-Pod (SportFlash AI) ==============
+  const autoPodId = uuidv4();
+  insertApp.run(
+    autoPodId,
+    'Auto-Pod (SportFlash AI)',
+    'מבזק הספורט האישי - Personal sports flash news generator with AI',
+    'https://github.com/navonn3/auto-pod',
+    'https://supabase.com/dashboard/project/owsjezhdlmxsnmozopvo',
+    'supabase',
+    'https://vercel.com/matans-projects-827d0407/auto-pod',
+    'vercel',
+    'https://auto-pod-xi.vercel.app/',
+    'railway',
+    JSON.stringify({
+      railwayProject: 'https://railway.com/project/86abd298-a219-48fd-a4e5-a69f5e7a98fc',
+      gnewsApi: 'https://docs.gnews.io/endpoints/search-endpoint'
+    }),
+    'active'
+  );
+
+  insertIdea.run(uuidv4(), autoPodId, 'Add podcast audio generation', 'Generate audio podcasts from sports news', 'high', 'pending');
+  insertIdea.run(uuidv4(), autoPodId, 'Personalized news feed', 'Allow users to customize sports topics', 'medium', 'pending');
+
+  // ============== Application 5: איפה כולם? (BASE44) ==============
+  const efokulamId = uuidv4();
+  insertApp.run(
+    efokulamId,
+    'איפה כולם?',
+    'BASE44 Application - Location/presence tracking app',
+    null,
+    null,
+    null,
+    null,
+    null,
+    'https://efokulam.base44.app/',
+    'custom',
+    JSON.stringify({ platform: 'BASE44' }),
+    'active'
+  );
+
+  // ============== Application 6: Avigdor (BASE44) ==============
+  const avigdorId = uuidv4();
+  insertApp.run(
+    avigdorId,
+    'Avigdor',
+    'BASE44 Application - Avigdor app',
+    null,
+    null,
+    null,
+    null,
+    null,
+    'https://avigdor.base44.app/',
+    'custom',
+    JSON.stringify({ platform: 'BASE44' }),
+    'active'
+  );
+
+  // ============== Application 7: SportFlash AI (BASE44 version) ==============
+  const sportFlashId = uuidv4();
+  insertApp.run(
+    sportFlashId,
+    'SportFlash AI (Base44)',
+    'BASE44 version of SportFlash AI sports news app',
+    null,
+    null,
+    null,
+    null,
+    null,
+    'https://sport-flash-ai-da67a094.base44.app/',
+    'custom',
+    JSON.stringify({ platform: 'BASE44' }),
+    'active'
+  );
 
   // Create sample global ideas
   const insertGlobalIdea = db.prepare(`
@@ -99,18 +179,18 @@ function seedDatabase(): void {
   const globalIdeas = [
     {
       id: uuidv4(),
-      title: 'Personal Finance Tracker',
-      description: 'A simple app to track expenses, income, and budgets with visual charts',
+      title: 'Basketball Stats Dashboard',
+      description: 'Unified dashboard showing stats from all basketball-related apps',
       target_platform: 'vercel',
-      complexity: 'medium',
+      complexity: 'complex',
       status: 'idea'
     },
     {
       id: uuidv4(),
-      title: 'Recipe Collection App',
-      description: 'Store and organize family recipes with ingredient scaling and shopping list generation',
-      target_platform: 'netlify',
-      complexity: 'simple',
+      title: 'Sports Calendar Integration',
+      description: 'Sync all game schedules across apps to a single calendar',
+      target_platform: 'vercel',
+      complexity: 'medium',
       status: 'planning'
     }
   ];
@@ -120,9 +200,15 @@ function seedDatabase(): void {
   }
 
   console.log('Database seeded successfully!');
-  console.log(`- Created 1 application: ${appId}`);
-  console.log(`- Created ${ideas.length} application ideas`);
-  console.log(`- Created ${globalIdeas.length} global ideas`);
+  console.log('Created 7 applications:');
+  console.log('  - תיק עבודות (Portfolio) - Netlify');
+  console.log('  - Blue-Basket - Vercel + Supabase');
+  console.log('  - Recap-Writer - Vercel');
+  console.log('  - Auto-Pod (SportFlash AI) - Vercel + Railway + Supabase');
+  console.log('  - איפה כולם? - BASE44');
+  console.log('  - Avigdor - BASE44');
+  console.log('  - SportFlash AI - BASE44');
+  console.log(`Created ${globalIdeas.length} global ideas`);
 }
 
 // Run the seed
