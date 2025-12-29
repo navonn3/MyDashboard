@@ -88,10 +88,21 @@ class Database {
   seed() {
     const now = new Date().toISOString();
 
+    // Static IDs for consistent data across serverless instances
+    const APP_IDS = {
+      portfolio: 'app-001-portfolio-sports',
+      blueBasket: 'app-002-blue-basket',
+      recapWriter: 'app-003-recap-writer',
+      autoPod: 'app-004-auto-pod',
+      efoKulam: 'app-005-efo-kulam',
+      avigdor: 'app-006-avigdor',
+      sportFlash: 'app-007-sportflash-base44'
+    };
+
     // Seed applications
     this.applications = [
       {
-        id: uuidv4(),
+        id: APP_IDS.portfolio,
         name: 'תיק עבודות - שדרן ספורט',
         description: 'Sports Broadcaster Portfolio - Personal portfolio website',
         frontend_url: 'https://app.netlify.com/projects/navon-portfolio/overview',
@@ -103,7 +114,7 @@ class Database {
         updated_at: now
       },
       {
-        id: uuidv4(),
+        id: APP_IDS.blueBasket,
         name: 'Blue-Basket',
         description: 'Basketball game data management with PDF generation',
         github_url: 'https://github.com/navonn3/BlueBasket_Supabase',
@@ -118,7 +129,7 @@ class Database {
         updated_at: now
       },
       {
-        id: uuidv4(),
+        id: APP_IDS.recapWriter,
         name: 'Recap-Writer',
         description: 'AI Basketball Narrator - Generates game recaps using AI',
         github_url: 'https://github.com/navonn3/recap-writer',
@@ -131,7 +142,7 @@ class Database {
         updated_at: now
       },
       {
-        id: uuidv4(),
+        id: APP_IDS.autoPod,
         name: 'Auto-Pod (SportFlash AI)',
         description: 'מבזק הספורט האישי - Personal sports flash news generator',
         github_url: 'https://github.com/navonn3/auto-pod',
@@ -149,7 +160,7 @@ class Database {
         updated_at: now
       },
       {
-        id: uuidv4(),
+        id: APP_IDS.efoKulam,
         name: 'איפה כולם?',
         description: 'BASE44 Application - Location/presence tracking app',
         live_url: 'https://efokulam.base44.app/',
@@ -160,7 +171,7 @@ class Database {
         updated_at: now
       },
       {
-        id: uuidv4(),
+        id: APP_IDS.avigdor,
         name: 'Avigdor',
         description: 'BASE44 Application',
         live_url: 'https://avigdor.base44.app/',
@@ -171,7 +182,7 @@ class Database {
         updated_at: now
       },
       {
-        id: uuidv4(),
+        id: APP_IDS.sportFlash,
         name: 'SportFlash AI (Base44)',
         description: 'BASE44 version of SportFlash AI',
         live_url: 'https://sport-flash-ai-da67a094.base44.app/',
@@ -183,22 +194,18 @@ class Database {
       }
     ];
 
-    // Seed some ideas
-    const blueBasketId = this.applications[1].id;
-    const recapWriterId = this.applications[2].id;
-    const autoPodId = this.applications[3].id;
-
+    // Seed some ideas with static IDs
     this.ideas = [
-      { id: uuidv4(), app_id: blueBasketId, title: 'Add more PDF templates', description: 'Create additional PDF layouts', priority: 'medium', status: 'pending', created_at: now },
-      { id: uuidv4(), app_id: blueBasketId, title: 'Improve scraper performance', description: 'Optimize mega-scraper', priority: 'high', status: 'pending', created_at: now },
-      { id: uuidv4(), app_id: recapWriterId, title: 'Multi-language support', description: 'Add Hebrew language output', priority: 'high', status: 'pending', created_at: now },
-      { id: uuidv4(), app_id: autoPodId, title: 'Add podcast audio generation', description: 'Generate audio podcasts', priority: 'high', status: 'pending', created_at: now }
+      { id: 'idea-001', app_id: APP_IDS.blueBasket, title: 'Add more PDF templates', description: 'Create additional PDF layouts', priority: 'medium', status: 'pending', created_at: now },
+      { id: 'idea-002', app_id: APP_IDS.blueBasket, title: 'Improve scraper performance', description: 'Optimize mega-scraper', priority: 'high', status: 'pending', created_at: now },
+      { id: 'idea-003', app_id: APP_IDS.recapWriter, title: 'Multi-language support', description: 'Add Hebrew language output', priority: 'high', status: 'pending', created_at: now },
+      { id: 'idea-004', app_id: APP_IDS.autoPod, title: 'Add podcast audio generation', description: 'Generate audio podcasts', priority: 'high', status: 'pending', created_at: now }
     ];
 
-    // Seed global ideas
+    // Seed global ideas with static IDs
     this.globalIdeas = [
-      { id: uuidv4(), title: 'Basketball Stats Dashboard', description: 'Unified dashboard showing stats from all apps', target_platform: 'vercel', complexity: 'complex', status: 'idea', created_at: now },
-      { id: uuidv4(), title: 'Sports Calendar Integration', description: 'Sync all game schedules to one calendar', target_platform: 'vercel', complexity: 'medium', status: 'planning', created_at: now }
+      { id: 'global-idea-001', title: 'Basketball Stats Dashboard', description: 'Unified dashboard showing stats from all apps', target_platform: 'vercel', complexity: 'complex', status: 'idea', created_at: now },
+      { id: 'global-idea-002', title: 'Sports Calendar Integration', description: 'Sync all game schedules to one calendar', target_platform: 'vercel', complexity: 'medium', status: 'planning', created_at: now }
     ];
   }
 }
