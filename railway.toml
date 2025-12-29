@@ -7,10 +7,3 @@ buildCommand = "cd app-dashboard/server && npm install && npm run build"
 
 [deploy]
 startCommand = "cd app-dashboard/server && npm run db:seed && npm start"
-healthcheckPath = "/api/health"
-healthcheckTimeout = 100
-restartPolicyType = "on_failure"
-restartPolicyMaxRetries = 3
-
-[service]
-internalPort = 8080
