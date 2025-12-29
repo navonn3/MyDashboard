@@ -6,9 +6,12 @@
 import Database, { Database as DatabaseType } from 'better-sqlite3';
 import path from 'path';
 
-// Initialize database in the server directory
-const dbPath = path.join(__dirname, '..', 'dashboard.db');
+// Use in-memory database for Railway/cloud environments, file-based for local dev
+const isProduction = process.env.NODE_ENV === 'production' || process.env.RAILWAY_ENVIRONMENT;
+const dbPath = isProduction ? ':memory:' : path.join(__dirname, '..', 'dashboard.db');
 const db: DatabaseType = new Database(dbPath);
+
+console.log(`Database mode: ${isProduction ? 'in-memory' : 'file-based'} at ${dbPath}`);
 
 // Enable foreign keys
 db.pragma('foreign_keys = ON');
