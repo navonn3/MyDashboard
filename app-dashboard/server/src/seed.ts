@@ -170,6 +170,23 @@ function seedDatabase(): void {
     'active'
   );
 
+  // ============== Application 8: MyDashboard ==============
+  const myDashboardId = uuidv4();
+  insertApp.run(
+    myDashboardId,
+    'MyDashboard',
+    'App Dashboard - Central management system for all applications with notes, ideas, and status monitoring',
+    'https://github.com/navonn3/MyDashboard',
+    null,
+    null,
+    null,
+    null,
+    null,
+    'custom',
+    JSON.stringify({ platform: 'GitHub Codespaces', note: 'This dashboard application itself' }),
+    'active'
+  );
+
   // Create sample global ideas
   const insertGlobalIdea = db.prepare(`
     INSERT INTO global_ideas (id, title, description, target_platform, complexity, status)
@@ -200,7 +217,7 @@ function seedDatabase(): void {
   }
 
   console.log('Database seeded successfully!');
-  console.log('Created 7 applications:');
+  console.log('Created 8 applications:');
   console.log('  - תיק עבודות (Portfolio) - Netlify');
   console.log('  - Blue-Basket - Vercel + Supabase');
   console.log('  - Recap-Writer - Vercel');
@@ -208,6 +225,7 @@ function seedDatabase(): void {
   console.log('  - איפה כולם? - BASE44');
   console.log('  - Avigdor - BASE44');
   console.log('  - SportFlash AI - BASE44');
+  console.log('  - MyDashboard - GitHub Codespaces');
   console.log(`Created ${globalIdeas.length} global ideas`);
 }
 
