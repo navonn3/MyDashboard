@@ -3,18 +3,64 @@
  * Application header with theme toggle, RTL toggle, and navigation
  */
 
-import { Sun, Moon, Settings, Plus, Download, Languages, Keyboard } from 'lucide-react';
+import { Sun, Moon, Settings, Plus, Download, Languages, Keyboard, Smartphone } from 'lucide-react';
 import { useUIStore, useDataStore } from '../hooks/useStore';
 import { exportAllData } from '../services/api';
 import { downloadAsJson } from '../utils/helpers';
 import { KEYBOARD_SHORTCUTS } from '../hooks/useKeyboardShortcuts';
 import toast from 'react-hot-toast';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
+// Store the deferred prompt globally so it persists
+let deferredPrompt: BeforeInstallPromptEvent | null = null;
+
+interface BeforeInstallPromptEvent extends Event {
+  prompt(): Promise<void>;
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
+}
 
 export default function Header() {
   const { theme, toggleTheme, isRTL, toggleRTL, openAddAppWizard, openSettings } = useUIStore();
   const { applications } = useDataStore();
   const [showShortcuts, setShowShortcuts] = useState(false);
+  const [canInstall, setCanInstall] = useState(false);
+
+  // Listen for the beforeinstallprompt event
+  useEffect(() => {
+    const handler = (e: Event) => {
+      e.preventDefault();
+      deferredPrompt = e as BeforeInstallPromptEvent;
+      setCanInstall(true);
+    };
+
+    window.addEventListener('beforeinstallprompt', handler);
+
+    // Check if already installed
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      setCanInstall(false);
+    }
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handler);
+    };
+  }, []);
+
+  const handleInstall = async () => {
+    if (!deferredPrompt) {
+      toast.error(isRTL ? 'לא ניתן להתקין כרגע' : 'Cannot install right now');
+      return;
+    }
+
+    await deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+
+    if (outcome === 'accepted') {
+      toast.success(isRTL ? 'האפליקציה מותקנת!' : 'App installed!');
+      setCanInstall(false);
+    }
+
+    deferredPrompt = null;
+  };
 
   const handleExport = async () => {
     const response = await exportAllData();
@@ -68,6 +114,17 @@ export default function Header() {
             >
               <Download className="w-5 h-5" />
             </button>
+
+            {/* Install PWA Button */}
+            {canInstall && (
+              <button
+                onClick={handleInstall}
+                className="btn-icon text-primary-600 dark:text-primary-400 animate-pulse"
+                title={isRTL ? 'התקן אפליקציה' : 'Install App'}
+              >
+                <Smartphone className="w-5 h-5" />
+              </button>
+            )}
 
             {/* Keyboard Shortcuts */}
             <div className="relative">
